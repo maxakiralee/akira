@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@letta-ai/letta-client": "^0.1.132",
     "@radix-ui/react-slot": "^1.0.2",
     "@vapi-ai/web": "^1.0.266",
     "class-variance-authority": "^0.7.0",
