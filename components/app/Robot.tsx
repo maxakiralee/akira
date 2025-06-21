@@ -40,7 +40,7 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
   const mesh = nodes.geometry_0 as THREE.Mesh
 
   return (
-    <group {...props} dispose={null} scale={2} position={[0, -1.5, 0]}>
+    <group {...props} dispose={null} scale={5} position={[0, -1.5, 0]}>
       <mesh
         castShadow
         receiveShadow
