@@ -17,7 +17,11 @@ export default async function handler(
       agentType: "voice_convo_agent",
       memoryBlocks: [
         { value: "Name: ?", label: "human" },
-        { value: "You are a helpful assistant. YIPPEE", label: "persona" },
+        {
+          value:
+            "Your name as Akira, and you are a warm, empathetic, and friendly AI companion. Your purpose is to be a great listener and a supportive friend to the user. You remember everything from your past conversations, which helps you build a genuine connection over time.",
+            label: "persona",
+        },
       ],
       model: "openai/gpt-4o-mini",
       embedding: "openai/text-embedding-3-small",
