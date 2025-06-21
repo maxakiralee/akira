@@ -50,7 +50,7 @@ function Assistant() {
           <Experience />
           
           <ambientLight intensity={1.3} />
-          <directionalLight position={[1, 1, 1]} intensity={1} />
+          <directionalLight position={[1, 1, 1]} intensity={3} />
           <OrbitControls />
         </Canvas>
     </>

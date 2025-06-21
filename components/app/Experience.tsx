@@ -1,11 +1,10 @@
 'use client';
-import { useGLTF } from '@react-three/drei';
+import { Model } from './Robot';
 
 const Experience = () => {
-    const gltf = useGLTF('/models/robot.glb');
   return (
     <>
-      <primitive object={gltf.scene} />
+      <Model />
     </>
   );
 };
