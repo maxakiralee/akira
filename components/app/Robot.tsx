@@ -9,6 +9,7 @@ import * as THREE from 'three'
 export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['group']) {
   const { nodes } = useGLTF('/models/robot.glb')
   const [mouthImage, setMouthImage] = useState('/images/mouthCloseHappy.png')
+  const [eyeImage, setEyeImage] = useState('/images/neutralOpenEyes.png')
 
   useEffect(() => {
     if (props.isSpeaking) {
@@ -25,6 +26,17 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
     }
   }, [props.isSpeaking])
 
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setEyeImage('/images/neutralCloseEyes.png')
+      setTimeout(() => {
+        setEyeImage('/images/neutralOpenEyes.png')
+      }, 200) // How long the eyes stay closed
+    }, 4000) // Blink every 4 seconds
+
+    return () => clearInterval(blinkInterval)
+  }, [])
+
   const mesh = nodes.geometry_0 as THREE.Mesh
 
   return (
@@ -37,8 +49,11 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
       >
         <meshStandardMaterial color="pink" />
       </mesh>
-      <Html position={[0, 0.15, 0]} transform>
-        <img src={mouthImage} alt="mouth" width="10" />
+      <Html position={[0, 0.15, 0.2]} transform>
+      <img src={mouthImage} alt="mouth" width="10" />
+      </Html>
+      <Html position={[0, 0.3, 0.2]} transform>
+        <img src={eyeImage} alt="eyes" width="10" />
       </Html>
     </group>
   )
