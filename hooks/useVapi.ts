@@ -18,7 +18,7 @@ export enum CALL_STATUS {
   LOADING = "loading",
 }
 
-export function useVapi() {
+export function useVapi(customAssistant?: any) {
   const [isSpeechActive, setIsSpeechActive] = useState(false);
   const [callStatus, setCallStatus] = useState<CALL_STATUS>(
     CALL_STATUS.INACTIVE
@@ -53,7 +53,9 @@ export function useVapi() {
     };
 
     const onMessageUpdate = (message: Message) => {
-      console.log("message", message);
+      if (process.env.NODE_ENV === 'development') {
+        console.log("message received");
+      }
       if (
         message.type === MessageTypeEnum.TRANSCRIPT &&
         message.transcriptType === TranscriptMessageTypeEnum.PARTIAL
@@ -67,7 +69,7 @@ export function useVapi() {
 
     const onError = (e: any) => {
       setCallStatus(CALL_STATUS.INACTIVE);
-      console.error(e);
+      console.error("Call error occurred");
     };
 
     vapi.on("speech-start", onSpeechStart);
@@ -92,10 +94,13 @@ export function useVapi() {
 
   const start = async () => {
     setCallStatus(CALL_STATUS.LOADING);
-    const response = vapi.start(assistant);
+    const assistantToUse = customAssistant || assistant;
+    const response = vapi.start(assistantToUse);
 
     response.then((res) => {
-      console.log("call", res);
+      if (process.env.NODE_ENV === 'development') {
+        console.log("call started");
+      }
     });
   };
 

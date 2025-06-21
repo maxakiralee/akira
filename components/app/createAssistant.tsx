@@ -1,11 +1,16 @@
 import { useCreateAssistant } from "@/hooks/useCreateAssistant";
 import { Button } from "../ui/button";
 
-export function CreateAssistant() {
+interface CreateAssistantProps {
+  onAgentCreated?: () => void;
+}
+
+export function CreateAssistant({ onAgentCreated }: CreateAssistantProps) {
   const { createAssistant, agent, isLoading, error } = useCreateAssistant();
 
   const handleCreateAssistant = async () => {
     await createAssistant();
+    onAgentCreated?.();
   };
 
   return (
@@ -19,12 +24,18 @@ export function CreateAssistant() {
 
       {error && <p className="mt-4 text-red-500">Error: {error.message}</p>}
 
-      {agent && (
+      {agent && process.env.NODE_ENV === 'development' && (
         <div className="mt-4 p-4 bg-gray-100 rounded">
           <h3 className="font-semibold">Assistant Created:</h3>
           <pre className="text-sm overflow-x-auto">
             {JSON.stringify(agent, null, 2)}
           </pre>
+        </div>
+      )}
+
+      {agent && process.env.NODE_ENV === 'production' && (
+        <div className="mt-4 p-4 bg-gray-100 rounded">
+          <h3 className="font-semibold">Assistant Created Successfully!</h3>
         </div>
       )}
     </div>
