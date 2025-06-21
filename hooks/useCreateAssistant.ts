@@ -5,7 +5,7 @@ export function useCreateAssistant() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  const createAssistant = async () => {
+  const createAssistant = async (): Promise<any | null> => {
     setIsLoading(true);
     setError(null);
     try {

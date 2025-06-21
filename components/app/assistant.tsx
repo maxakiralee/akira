@@ -5,6 +5,9 @@ import { AssistantButton } from "./assistantButton";
 import { CreateAssistant } from "@/components/app/createAssistant";
 import { useEffect, useState } from "react";
 import { TranscriptMessage } from "@/lib/types/conversation.type";
+import { Experience } from "./Experience";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
 
 function Assistant() {
   const { toggleCall, callStatus, audioLevel, messages, activeTranscript } =
@@ -43,6 +46,13 @@ function Assistant() {
         ></AssistantButton>
         <CreateAssistant />
       </div>
+      <Canvas >
+          <Experience />
+          
+          <ambientLight intensity={1.3} />
+          <directionalLight position={[1, 1, 1]} intensity={1} />
+          <OrbitControls />
+        </Canvas>
     </>
   );
 }
