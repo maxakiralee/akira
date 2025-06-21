@@ -10,8 +10,14 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 
 function Assistant() {
-  const { toggleCall, callStatus, audioLevel, messages, activeTranscript } =
-    useVapi();
+  const {
+    toggleCall,
+    callStatus,
+    audioLevel,
+    messages,
+    activeTranscript,
+    isSpeechActive,
+  } = useVapi();
   const [currentSubtitle, setCurrentSubtitle] = useState("");
 
   useEffect(() => {
@@ -45,14 +51,13 @@ function Assistant() {
           toggleCall={toggleCall}
         ></AssistantButton>
         <CreateAssistant />
-      </div>
-      <Canvas >
-          <Experience />
-          
+        <Canvas>
+          <Experience isSpeaking={isSpeechActive} />
           <ambientLight intensity={1.3} />
-          <directionalLight position={[1, 1, 1]} intensity={3} />
+          <directionalLight position={[1, 1, 1]} intensity={1} />
           <OrbitControls />
         </Canvas>
+      </div>
     </>
   );
 }

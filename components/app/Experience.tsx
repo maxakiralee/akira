@@ -1,10 +1,10 @@
 'use client';
 import { Model } from './Robot';
 
-const Experience = () => {
+const Experience = ({ isSpeaking }: { isSpeaking: boolean }) => {
   return (
     <>
-      <Model />
+      <Model isSpeaking={isSpeaking} />
     </>
   );
 };
