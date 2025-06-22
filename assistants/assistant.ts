@@ -16,3 +16,6 @@ export const createAssistant = (agentId: string): CreateAssistantDTO | any => ({
   firstMessage: "Hey there! How are you doing?",
 });
 
+export const assistant: CreateAssistantDTO | any = createAssistant(
+  process.env.NEXT_PUBLIC_LETTA_AGENT_ID || ""
+);
