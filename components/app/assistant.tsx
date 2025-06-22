@@ -10,6 +10,11 @@ import { OrbitControls } from "@react-three/drei";
 import { useAuth } from "@/components/auth/AuthProvider";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { createAssistant } from "@/assistants/assistant";
+import dynamic from 'next/dynamic';
+
+const FluidBackground = dynamic(() => import('../ui/fluidBackground'), {
+  ssr: false,
+});
 
 function Assistant() {
   const { user, loading, signOut } = useAuth();
@@ -71,8 +76,13 @@ function Assistant() {
   }, [messages, activeTranscript]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-50">
-      {/* Background Canvas */}
+    <div className="relative w-screen h-screen overflow-hidden">
+      {/* Fluid Background Canvas */}
+      <div className="absolute top-0 left-0 w-full h-full z-0">
+        <FluidBackground />
+      </div>
+
+      {/* 3D Robot Canvas */}
       <div className="absolute top-0 left-0 w-full h-full z-[1]">
         <Canvas>
           <Experience isSpeaking={isSpeechActive} />
