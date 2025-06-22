@@ -13,6 +13,8 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
   const [mouthImage, setMouthImage] = useState('/images/mouthCloseHappy.png')
   const [eyeImage, setEyeImage] = useState('/images/neutralOpenEyes.png')
 
+  const hat = useGLTF('/models/hat.glb')
+
   useEffect(() => {
     if (props.isSpeaking) {
       const interval = setInterval(() => {
@@ -43,7 +45,7 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
   const robotColor = new THREE.Color(appearance.bodyColor).convertSRGBToLinear()
 
   return (
-    <group {...props} dispose={null} scale={5} position={[0, 0, 0]}>
+    <group {...props} dispose={null} scale={5} position={[0, 0, 0]}> 
       <mesh
         castShadow
         receiveShadow
@@ -52,6 +54,9 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
       >
         <meshStandardMaterial color={robotColor} />
       </mesh>
+      {appearance.hasHat && (
+        <primitive object={hat.scene} position={[0, 0, 0]} rotation={[0, 0, 0]} />
+      )}
       <Html position={[0, 0.15, 0.2]} transform>
       <img src={mouthImage} alt="mouth" width="10" />
       </Html>
@@ -63,3 +68,4 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
 }
 
 useGLTF.preload('/models/robot.glb')
+useGLTF.preload('/models/hat.glb')

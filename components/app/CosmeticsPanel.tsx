@@ -9,7 +9,7 @@ interface CosmeticsPanelProps {
 }
 
 const CosmeticsPanel: React.FC<CosmeticsPanelProps> = ({ isOpen, onClose }) => {
-  const { appearance, updateBodyColor } = useRobot();
+  const { appearance, updateBodyColor, toggleHat } = useRobot();
   
   if (!isOpen) return null;
 
@@ -62,10 +62,25 @@ const CosmeticsPanel: React.FC<CosmeticsPanelProps> = ({ isOpen, onClose }) => {
           </div>
           
           <div className="grid grid-cols-2 gap-4">
-            <div className="aspect-square bg-slate-200/60 rounded-2xl border border-slate-300 flex items-center justify-center cursor-pointer hover:bg-slate-300/60 transition-all duration-200 shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.15),-6px_-6px_12px_rgba(255,255,255,0.9)]">
-              <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
+            <div 
+              onClick={toggleHat}
+              className={`
+                aspect-square rounded-2xl border cursor-pointer transition-all duration-200
+                shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)]
+                hover:shadow-[6px_6px_12px_rgba(0,0,0,0.15),-6px_-6px_12px_rgba(255,255,255,0.9)]
+                hover:scale-105 flex items-center justify-center
+                ${appearance.hasHat 
+                  ? 'bg-blue-100 border-blue-400 border-2 scale-105' 
+                  : 'bg-slate-200/60 border-slate-300 hover:bg-slate-300/60'
+                }
+              `}
+              title={appearance.hasHat ? "Remove hat" : "Add hat"}
+            >
+              <img 
+                src="/images/hat.svg" 
+                alt="Hat" 
+                className="w-8 h-6 object-contain"
+              />
             </div>
             <div className="aspect-square bg-slate-200/60 rounded-2xl border border-slate-300 flex items-center justify-center cursor-pointer hover:bg-slate-300/60 transition-all duration-200 shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.15),-6px_-6px_12px_rgba(255,255,255,0.9)]">
               <svg className="w-8 h-8 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
