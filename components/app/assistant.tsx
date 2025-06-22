@@ -12,6 +12,9 @@ import { AuthForm } from "@/components/auth/AuthForm";
 import { createAssistant } from "@/assistants/assistant";
 import dynamic from 'next/dynamic';
 import ImageUploader from './ImageUploader';
+import CosmeticsButton from './CosmeticsButton';
+import CosmeticsPanel from './CosmeticsPanel';
+import { RobotProvider } from './RobotContext';
 
 const FluidBackground = dynamic(() => import('../ui/fluidBackground'), {
   ssr: false,
@@ -35,6 +38,7 @@ function Assistant() {
   } = useVapi(assistantConfig);
   
   const [currentSubtitle, setCurrentSubtitle] = useState("");
+  const [isCosmeticsOpen, setIsCosmeticsOpen] = useState(false);
 
   // Fetch user agent when authenticated
   useEffect(() => {
@@ -79,7 +83,8 @@ function Assistant() {
   }, [vapiMessages, activeTranscript]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <RobotProvider>
+      <div className="relative w-screen h-screen overflow-hidden">
       {/* Fluid Background Canvas */}
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <FluidBackground />
@@ -90,8 +95,8 @@ function Assistant() {
         <Canvas>
           <Experience isSpeaking={isSpeechActive} />
           <ambientLight intensity={1.3} />
-          <directionalLight position={[1, 1, 1]} intensity={1} />
-          <directionalLight position={[-1, -1, -1]} intensity={1} />
+          <directionalLight position={[1, 1, 1]} intensity={3} />
+          <directionalLight position={[-1, -1, 1]} intensity={3} />
           <OrbitControls />
         </Canvas>
       </div>
@@ -165,13 +170,23 @@ function Assistant() {
         )}
       </div>
 
-      {/* Bottom Controls - Microphone and Image Upload */}
+      {/* Bottom Left Controls - Cosmetics and Image Upload */}
       {user && userAgent?.agentId && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex items-center space-x-4">
+        <div className="absolute bottom-8 left-8 z-50 flex items-center space-x-4">
+          {/* Cosmetics Button */}
+          <CosmeticsButton 
+            isOpen={isCosmeticsOpen} 
+            onToggle={() => setIsCosmeticsOpen(!isCosmeticsOpen)} 
+          />
+          
           {/* Image Upload Button */}
           <ImageUploader />
-          
-          {/* Microphone Button */}
+        </div>
+      )}
+
+      {/* Bottom Center Control - Microphone */}
+      {user && userAgent?.agentId && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50">
           <AssistantButton
             audioLevel={audioLevel}
             callStatus={callStatus}
@@ -179,7 +194,14 @@ function Assistant() {
           />
         </div>
       )}
-    </div>
+
+      {/* Cosmetics Panel */}
+      <CosmeticsPanel 
+        isOpen={isCosmeticsOpen} 
+        onClose={() => setIsCosmeticsOpen(false)} 
+      />
+      </div>
+    </RobotProvider>
   );
 }
 
