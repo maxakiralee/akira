@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { Button } from '@/components/ui/button'
 
 interface AuthFormProps {
   onAuthSuccess?: () => void
@@ -103,64 +102,86 @@ export const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
   }
 
   return (
-    <div className="bg-black/20 backdrop-blur-sm rounded-lg p-6 w-full max-w-md">
-      <h2 className="text-2xl font-bold text-white mb-6 text-center">
-        {isLogin ? 'Welcome Back' : 'Create Account'}
-      </h2>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/60 border border-white/20 focus:border-white/40 focus:outline-none"
-          />
+    <div className="w-full max-w-sm">
+      {/* Main Auth Card */}
+      <div className="bg-gradient-to-br from-slate-100 to-slate-200 rounded-3xl p-8 shadow-[20px_20px_40px_rgba(0,0,0,0.1),-20px_-20px_40px_rgba(255,255,255,0.8)] border border-white/50">
+        
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-light text-slate-700 mb-2">
+            {isLogin ? 'Welcome Back' : 'Join'}
+          </h2>
+          <p className="text-sm text-slate-500">
+            {isLogin ? 'Sign in to continue' : 'Create your account'}
+          </p>
         </div>
         
-        <div>
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={6}
-            className="w-full px-4 py-2 rounded-lg bg-white/10 text-white placeholder-white/60 border border-white/20 focus:border-white/40 focus:outline-none"
-          />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Email Input */}
+          <div className="relative">
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full px-6 py-4 rounded-2xl bg-slate-100 text-slate-700 placeholder-slate-400 border-0 shadow-[inset_8px_8px_16px_rgba(0,0,0,0.1),inset_-8px_-8px_16px_rgba(255,255,255,0.8)] focus:outline-none"
+            />
+          </div>
+          
+          {/* Password Input */}
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              minLength={6}
+              className="w-full px-6 py-4 rounded-2xl bg-slate-100 text-slate-700 placeholder-slate-400 border-0 shadow-[inset_8px_8px_16px_rgba(0,0,0,0.1),inset_-8px_-8px_16px_rgba(255,255,255,0.8)] focus:outline-none"
+            />
+          </div>
+          
+          {/* Error/Success Messages */}
+          {error && (
+            <div className="text-red-500 text-sm text-center bg-red-50 py-3 px-4 rounded-xl shadow-[inset_4px_4px_8px_rgba(239,68,68,0.1)]">
+              {error}
+            </div>
+          )}
+          
+          {message && (
+            <div className="text-emerald-600 text-sm text-center bg-emerald-50 py-3 px-4 rounded-xl shadow-[inset_4px_4px_8px_rgba(16,185,129,0.1)]">
+              {message}
+            </div>
+          )}
+          
+          {/* Submit Button */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-4 px-6 rounded-2xl bg-gradient-to-r from-blue-400 to-purple-500 text-white font-medium shadow-[8px_8px_16px_rgba(0,0,0,0.15),-8px_-8px_16px_rgba(255,255,255,0.1)] hover:shadow-[12px_12px_20px_rgba(0,0,0,0.2),-12px_-12px_20px_rgba(255,255,255,0.15)] active:shadow-[inset_8px_8px_16px_rgba(0,0,0,0.2)] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {loading ? (
+              <div className="flex items-center justify-center space-x-2">
+                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                <span>Loading...</span>
+              </div>
+            ) : (
+              isLogin ? 'Sign In' : 'Sign Up'
+            )}
+          </button>
+        </form>
+        
+        {/* Toggle Auth Mode */}
+        <div className="mt-8 text-center">
+          <button
+            type="button"
+            onClick={() => setIsLogin(!isLogin)}
+            className="text-slate-500 hover:text-slate-700 text-sm transition-colors duration-200"
+          >
+            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+          </button>
         </div>
-        
-        {error && (
-          <div className="text-red-400 text-sm text-center">
-            {error}
-          </div>
-        )}
-        
-        {message && (
-          <div className="text-green-400 text-sm text-center">
-            {message}
-          </div>
-        )}
-        
-        <Button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-white/20 hover:bg-white/30 text-white border border-white/20"
-        >
-          {loading ? 'Loading...' : (isLogin ? 'Sign In' : 'Sign Up')}
-        </Button>
-      </form>
-      
-      <div className="mt-4 text-center">
-        <button
-          type="button"
-          onClick={() => setIsLogin(!isLogin)}
-          className="text-white/80 hover:text-white text-sm underline"
-        >
-          {isLogin ? "Don&apos;t have an account? Sign up" : "Already have an account? Sign in"}
-        </button>
       </div>
     </div>
   )

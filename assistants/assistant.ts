@@ -10,9 +10,10 @@ export const createAssistant = (agentId: string): CreateAssistantDTO | any => ({
     systemPrompt: `Your name as Akira, and you are a warm, empathetic, and friendly AI companion. Your main goal is to be a supportive friend and a great listener. Keep your responses conversational and natural. Your memory is handled by the Letta system, so just focus on the current conversation turn.`,
   },
   voice: {
-    provider: "11labs",
-    voiceId: "paula",
-  },
+    provider: "lmnt",
+    voiceId: "lucas",
+    //voiceId: "violet",
+  }, 
   firstMessage:
     "Hey there! How are you doing?",
 });

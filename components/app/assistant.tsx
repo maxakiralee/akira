@@ -71,9 +71,9 @@ function Assistant() {
   }, [messages, activeTranscript]);
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-50">
       {/* Background Canvas */}
-      <div className="absolute top-0 left-0 w-full h-full z-[-1]">
+      <div className="absolute top-0 left-0 w-full h-full z-[1]">
         <Canvas>
           <Experience isSpeaking={isSpeechActive} />
           <ambientLight intensity={1.3} />
@@ -84,21 +84,31 @@ function Assistant() {
       </div>
 
       {/* Foreground Content */}
-      <div className="absolute top-0 left-0 w-full h-full flex items-center">
+      <div className="absolute top-0 left-0 w-full h-full flex items-center z-10">
         <div className="w-1/2 flex flex-col items-center justify-center">
-          {!user && <h1 className="text-7xl font-bold text-black">Hi, I&apos;m Akira</h1>}
+          {!user && (
+            <h1 className="text-7xl font-light text-slate-700 mb-8 tracking-wide">
+              Hi, I&apos;m Akira
+            </h1>
+          )}
           
           {loading ? (
-            <p className="mt-4 text-lg text-gray-700">Loading...</p>
+            <div className="bg-slate-100/80 backdrop-blur-sm rounded-2xl p-6 shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)]">
+              <p className="text-lg text-slate-600">Loading...</p>
+            </div>
           ) : !user ? (
             <div className="mt-8">
               <AuthForm onAuthSuccess={() => setUserAgent(null)} />
             </div>
           ) : agentLoading ? (
-            <p className="mt-4 text-lg text-gray-700">Setting up your AI companion...</p>
+            <div className="bg-slate-100/80 backdrop-blur-sm rounded-2xl p-6 shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)]">
+              <p className="text-lg text-slate-600">Setting up your AI companion...</p>
+            </div>
           ) : userAgent && !userAgent.hasAgent ? (
             <div className="mt-4 text-center">
-              <p className="text-lg text-gray-700 mb-4">Setting up your AI companion...</p>
+              <div className="bg-slate-100/80 backdrop-blur-sm rounded-2xl p-6 shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)]">
+                <p className="text-lg text-slate-600 mb-4">Setting up your AI companion...</p>
+              </div>
             </div>
           ) : null}
         </div>
@@ -106,18 +116,18 @@ function Assistant() {
         {/* Right half with transcript next to the 3D head */}
         <div className="w-1/2 flex items-center justify-center pl-16">
           {currentSubtitle && (
-            <div className="max-w-md">
-              <p className="text-lg font-medium text-black">{currentSubtitle}</p>
+            <div className="max-w-md bg-slate-100/60 backdrop-blur-sm rounded-2xl p-6 shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)]">
+              <p className="text-lg font-medium text-slate-700">{currentSubtitle}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Bottom Right UI Elements */}
-      <div className="absolute bottom-8 right-8 flex flex-col items-end space-y-4">
+      <div className="absolute bottom-8 right-8 flex flex-col items-end space-y-4 z-50">
         {/* Agent Object Display (for validation) */}
         {user && process.env.NODE_ENV === 'development' && (
-          <div className="p-3 max-w-md bg-black/20 backdrop-blur-sm rounded-lg text-white text-xs">
+          <div className="p-3 max-w-md bg-slate-100/80 backdrop-blur-sm rounded-xl shadow-[8px_8px_16px_rgba(0,0,0,0.1),-8px_-8px_16px_rgba(255,255,255,0.8)] text-slate-600 text-xs">
             {agentLoading ? (
               <p><strong>Status:</strong> Loading agent...</p>
             ) : userAgent ? (
@@ -135,7 +145,7 @@ function Assistant() {
         {user && (
           <button
             onClick={signOut}
-            className="text-sm text-gray-500 hover:text-gray-700 underline bg-white/80 px-3 py-1 rounded"
+            className="text-sm text-slate-500 hover:text-slate-700 bg-slate-100/80 backdrop-blur-sm px-4 py-2 rounded-xl shadow-[4px_4px_8px_rgba(0,0,0,0.1),-4px_-4px_8px_rgba(255,255,255,0.8)] hover:shadow-[6px_6px_12px_rgba(0,0,0,0.15),-6px_-6px_12px_rgba(255,255,255,0.9)] transition-all duration-200"
           >
             Sign Out
           </button>
@@ -144,7 +154,7 @@ function Assistant() {
 
       {/* Microphone Button - Center Bottom */}
       {user && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50">
           <AssistantButton
             audioLevel={audioLevel}
             callStatus={callStatus}
