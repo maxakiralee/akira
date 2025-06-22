@@ -1,6 +1,6 @@
 "use client";
 
-import { useVapi } from "../../hooks/useVapi";
+import { useVapi, CALL_STATUS } from "../../hooks/useVapi";
 import { AssistantButton } from "./assistantButton";
 import { useEffect, useState } from "react";
 import { TranscriptMessage, Message, MessageTypeEnum } from "@/lib/types/conversation.type";
@@ -11,7 +11,8 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { createAssistant } from "@/assistants/assistant";
 import dynamic from 'next/dynamic';
-import ImageUploader from './ImageUploader';
+import ImageUploadButton from './ImageUploadButton';
+import ImageUploadPanel from './ImageUploadPanel';
 import CosmeticsButton from './CosmeticsButton';
 import CosmeticsPanel from './CosmeticsPanel';
 import { RobotProvider } from './RobotContext';
@@ -39,6 +40,7 @@ function Assistant() {
   
   const [currentSubtitle, setCurrentSubtitle] = useState("");
   const [isCosmeticsOpen, setIsCosmeticsOpen] = useState(false);
+  const [isImageUploadOpen, setIsImageUploadOpen] = useState(false);
 
   // Fetch user agent when authenticated
   useEffect(() => {
@@ -180,7 +182,11 @@ function Assistant() {
           />
           
           {/* Image Upload Button */}
-          <ImageUploader />
+          <ImageUploadButton 
+            isOpen={isImageUploadOpen} 
+            onToggle={() => setIsImageUploadOpen(!isImageUploadOpen)}
+            isCallActive={callStatus === CALL_STATUS.ACTIVE}
+          />
         </div>
       )}
 
@@ -199,6 +205,12 @@ function Assistant() {
       <CosmeticsPanel 
         isOpen={isCosmeticsOpen} 
         onClose={() => setIsCosmeticsOpen(false)} 
+      />
+
+      {/* Image Upload Panel */}
+      <ImageUploadPanel 
+        isOpen={isImageUploadOpen} 
+        onClose={() => setIsImageUploadOpen(false)} 
       />
       </div>
     </RobotProvider>

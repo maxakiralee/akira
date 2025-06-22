@@ -15,7 +15,7 @@ export const createAssistant = (agentId: string): CreateAssistantDTO | any => ({
     //voiceId: "violet",
   }, 
   firstMessage:
-    "Hey there! How are you doing?",
+    "Hey there, how are you doing?",
 });
 
 // Fallback for backward compatibility

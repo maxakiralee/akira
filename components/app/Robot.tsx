@@ -43,7 +43,7 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
   const robotColor = new THREE.Color(appearance.bodyColor).convertSRGBToLinear()
 
   return (
-    <group {...props} dispose={null} scale={5} position={[0, -0.5, 0]}>
+    <group {...props} dispose={null} scale={5} position={[0, 0, 0]}>
       <mesh
         castShadow
         receiveShadow
