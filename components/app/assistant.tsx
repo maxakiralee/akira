@@ -153,7 +153,7 @@ function Assistant() {
             ) : userAgent ? (
               <>
                 <p><strong>Agent Status:</strong> {userAgent.hasAgent ? 'Connected' : 'No Agent'}</p>
-                {userAgent.agentId && <p><strong>Agent ID:</strong> {userAgent.agentId}</p>}
+
               </>
             ) : (
               <p><strong>Status:</strong> Checking agent status...</p>
