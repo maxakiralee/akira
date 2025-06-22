@@ -40,14 +40,14 @@ export function Model(props: { isSpeaking: boolean } & JSX.IntrinsicElements['gr
   const mesh = nodes.geometry_0 as THREE.Mesh
 
   return (
-    <group {...props} dispose={null} scale={5} position={[0, -1.5, 0]}>
+    <group {...props} dispose={null} scale={5} position={[0, -0.5, 0]}>
       <mesh
         castShadow
         receiveShadow
         geometry={mesh.geometry}
         material={mesh.material}
       >
-        <meshStandardMaterial color="pink" />
+        <meshStandardMaterial color="#e7abff" />
       </mesh>
       <Html position={[0, 0.15, 0.2]} transform>
       <img src={mouthImage} alt="mouth" width="10" />

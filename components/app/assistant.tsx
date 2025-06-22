@@ -2,7 +2,6 @@
 
 import { useVapi } from "../../hooks/useVapi";
 import { AssistantButton } from "./assistantButton";
-import { CreateAssistant } from "@/components/app/createAssistant";
 import { useEffect, useState } from "react";
 import { TranscriptMessage } from "@/lib/types/conversation.type";
 import { Experience } from "./Experience";
@@ -87,7 +86,7 @@ function Assistant() {
       {/* Foreground Content */}
       <div className="absolute top-0 left-0 w-full h-full flex items-center">
         <div className="w-1/2 flex flex-col items-center justify-center">
-          <h1 className="text-7xl font-bold text-black">Hi, I&apos;m Akira</h1>
+          {!user && <h1 className="text-7xl font-bold text-black">Hi, I&apos;m Akira</h1>}
           
           {loading ? (
             <p className="mt-4 text-lg text-gray-700">Loading...</p>
@@ -100,29 +99,18 @@ function Assistant() {
           ) : userAgent && !userAgent.hasAgent ? (
             <div className="mt-4 text-center">
               <p className="text-lg text-gray-700 mb-4">Setting up your AI companion...</p>
-              <CreateAssistant onAgentCreated={() => setUserAgent(null)} />
             </div>
-          ) : (
-            <div className="mt-4 text-center">
-              <button
-                onClick={toggleCall}
-                className="text-lg text-gray-700 hover:text-black transition-colors"
-              >
-                Click to Begin
-              </button>
-              <div className="mt-4">
-                <button
-                  onClick={signOut}
-                  className="text-sm text-gray-500 hover:text-gray-700 underline"
-                >
-                  Sign Out
-                </button>
-              </div>
+          ) : null}
+        </div>
+        
+        {/* Right half with transcript next to the 3D head */}
+        <div className="w-1/2 flex items-center justify-center pl-16">
+          {currentSubtitle && (
+            <div className="max-w-md">
+              <p className="text-lg font-medium text-black">{currentSubtitle}</p>
             </div>
           )}
         </div>
-        {/* The right half is intentionally empty to show the canvas behind it */}
-        <div className="w-1/2"></div>
       </div>
 
       {/* Bottom Right UI Elements */}
@@ -143,21 +131,27 @@ function Assistant() {
           </div>
         )}
         
-        <div className="my-4 p-4 h-24 w-80 flex items-center justify-center text-center border rounded-lg bg-gray-100 bg-opacity-75">
-          <p className="text-lg font-medium text-gray-700">{currentSubtitle}</p>
-        </div>
-        
+        {/* Sign Out Button */}
         {user && (
-          <div className="flex space-x-2">
-            <AssistantButton
-              audioLevel={audioLevel}
-              callStatus={callStatus}
-              toggleCall={toggleCall}
-            />
-            <CreateAssistant onAgentCreated={() => setUserAgent(null)} />
-          </div>
+          <button
+            onClick={signOut}
+            className="text-sm text-gray-500 hover:text-gray-700 underline bg-white/80 px-3 py-1 rounded"
+          >
+            Sign Out
+          </button>
         )}
       </div>
+
+      {/* Microphone Button - Center Bottom */}
+      {user && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <AssistantButton
+            audioLevel={audioLevel}
+            callStatus={callStatus}
+            toggleCall={toggleCall}
+          />
+        </div>
+      )}
     </div>
   );
 }
