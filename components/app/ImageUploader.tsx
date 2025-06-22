@@ -57,13 +57,13 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ onImageAnalyzed }) => {
       const data = await response.json();
 
       if (data.success && data.description) {
-        vapi.send({
-          type: "add-message",
-          message: {
-            role: "system",
-            content: `User has shared an image. Here's what I can see: ${data.description}`
-          }
-        });
+        //vapi.send({
+        //  type: "add-message",
+        //  message: {
+        //    role: "system",
+        //    content: `User has shared an image. Here's what I can see: ${data.description}`
+        //  }
+        //});
         
         onImageAnalyzed?.(data.description);
       }

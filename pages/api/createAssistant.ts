@@ -62,7 +62,7 @@ export default async function handler(
       embedding: "openai/text-embedding-3-small",
       enableSleeptime: true,
       initialMessageSequence: [],
-      tools: [],
+      //tools: ["web_search"],
     });
 
     // Save agent ID to user's profile
