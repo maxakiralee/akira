@@ -3,6 +3,7 @@ export enum MessageTypeEnum {
   FUNCTION_CALL = "function-call",
   FUNCTION_CALL_RESULT = "function-call-result",
   ADD_MESSAGE = "add-message",
+  IMAGE_MESSAGE = "image-message",
 }
 
 export enum MessageRoleEnum {
@@ -40,6 +41,14 @@ export interface FunctionCallResultMessage extends BaseMessage {
   };
 }
 
+export interface ImageMessage extends BaseMessage {
+  type: MessageTypeEnum.IMAGE_MESSAGE;
+  role: MessageRoleEnum;
+  imageUrl: string;
+  content: string;
+  timestamp: number;
+}
+
 export interface BaseMessage {
   type: MessageTypeEnum;
 }
@@ -47,4 +56,5 @@ export interface BaseMessage {
 export type Message =
   | TranscriptMessage
   | FunctionCallMessage
-  | FunctionCallResultMessage;
+  | FunctionCallResultMessage
+  | ImageMessage;

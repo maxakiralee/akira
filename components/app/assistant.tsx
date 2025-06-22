@@ -3,7 +3,7 @@
 import { useVapi } from "../../hooks/useVapi";
 import { AssistantButton } from "./assistantButton";
 import { useEffect, useState } from "react";
-import { TranscriptMessage } from "@/lib/types/conversation.type";
+import { TranscriptMessage, Message, MessageTypeEnum } from "@/lib/types/conversation.type";
 import { Experience } from "./Experience";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -11,6 +11,7 @@ import { useAuth } from "@/components/auth/AuthProvider";
 import { AuthForm } from "@/components/auth/AuthForm";
 import { createAssistant } from "@/assistants/assistant";
 import dynamic from 'next/dynamic';
+import ImageUploader from './ImageUploader';
 
 const FluidBackground = dynamic(() => import('../ui/fluidBackground'), {
   ssr: false,
@@ -28,10 +29,11 @@ function Assistant() {
     toggleCall,
     callStatus,
     audioLevel,
-    messages,
+    messages: vapiMessages,
     activeTranscript,
     isSpeechActive,
   } = useVapi(assistantConfig);
+  
   const [currentSubtitle, setCurrentSubtitle] = useState("");
 
   // Fetch user agent when authenticated
@@ -60,20 +62,21 @@ function Assistant() {
     if (activeTranscript && activeTranscript.role === "assistant") {
       setCurrentSubtitle(activeTranscript.transcript);
     } else {
-      // When the live transcript is not active, find the last completed one.
-      const latestAssistantMessage = [...messages]
+      // When the live transcript is not active, find the last completed message
+      const latestMessage = [...vapiMessages]
         .reverse()
-        .find(
-          (msg: any) => msg.type === "transcript" && msg.role === "assistant"
-        );
+        .find((msg: any) => {
+          if (msg.type === MessageTypeEnum.TRANSCRIPT && msg.role === "assistant") {
+            return true;
+          }
+          return false;
+        });
 
-      if (latestAssistantMessage) {
-        setCurrentSubtitle(
-          (latestAssistantMessage as TranscriptMessage).transcript
-        );
+      if (latestMessage && latestMessage.type === MessageTypeEnum.TRANSCRIPT) {
+        setCurrentSubtitle((latestMessage as TranscriptMessage).transcript);
       }
     }
-  }, [messages, activeTranscript]);
+  }, [vapiMessages, activeTranscript]);
 
   return (
     <div className="relative w-screen h-screen overflow-hidden">
@@ -162,9 +165,13 @@ function Assistant() {
         )}
       </div>
 
-      {/* Microphone Button - Center Bottom */}
-      {user && (
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50">
+      {/* Bottom Controls - Microphone and Image Upload */}
+      {user && userAgent?.agentId && (
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex items-center space-x-4">
+          {/* Image Upload Button */}
+          <ImageUploader />
+          
+          {/* Microphone Button */}
           <AssistantButton
             audioLevel={audioLevel}
             callStatus={callStatus}
